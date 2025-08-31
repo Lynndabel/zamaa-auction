@@ -2,3 +2,4 @@
 @fhevm/=lib/fhevm/
 @fhevm-contracts/=lib/fhevm/contracts/
 forge-std/=lib/forge-std/src/
+encrypted-types/=lib/fhevm/library-solidity/lib/encrypted-types/

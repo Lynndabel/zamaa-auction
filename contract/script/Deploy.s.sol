@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "forge-std/Script.sol";
-import "forge-std/console.sol";
-import "../src/AuctionFactory.sol";
+import {Script} from "forge-std/Script.sol";
+import {console} from "forge-std/console.sol";
+import {AuctionFactory} from "../src/AuctionFactory.sol";
 
 contract DeployScript is Script {
     function run() public {

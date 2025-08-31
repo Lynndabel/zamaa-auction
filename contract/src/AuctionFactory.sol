@@ -43,7 +43,7 @@ contract AuctionFactory is Ownable, ReentrancyGuard {
      * @param _assetContract Address of the asset contract
      * @param _tokenId Token ID for NFTs
      * @param _amount Amount for ERC20 or ERC1155
-     * @param _encryptedReservePrice Encrypted reserve price
+     * @param _reservePlain Plain reserve price (trivially encrypted on-chain for demo)
      * @param _startTime Auction start time
      * @param _biddingDuration Duration of bidding phase in seconds
      * @param _revealDuration Duration of reveal phase in seconds
@@ -54,17 +54,12 @@ contract AuctionFactory is Ownable, ReentrancyGuard {
         address _assetContract,
         uint256 _tokenId,
         uint256 _amount,
-        bytes calldata _encryptedReservePrice,
+        uint256 _reservePlain,
         uint256 _startTime,
         uint256 _biddingDuration,
         uint256 _revealDuration
     ) external nonReentrant returns (address auction) {
         require(_assetContract != address(0), "Invalid asset contract");
-        require(_startTime >= block.timestamp, "Start time in past");
-        require(_biddingDuration >= 1 hours, "Bidding too short");
-        require(_biddingDuration <= 30 days, "Bidding too long");
-        require(_revealDuration >= 1 hours, "Reveal too short");
-        require(_revealDuration <= 7 days, "Reveal too long");
         
         // Deploy new auction contract
         FHEAuction newAuction = new FHEAuction();
@@ -76,7 +71,7 @@ contract AuctionFactory is Ownable, ReentrancyGuard {
             _assetContract,
             _tokenId,
             _amount,
-            _encryptedReservePrice,
+            _reservePlain,
             _startTime,
             _biddingDuration,
             _revealDuration

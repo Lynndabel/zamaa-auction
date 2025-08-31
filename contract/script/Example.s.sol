@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-import "forge-std/Script.sol";
-import "../src/AuctionFactory.sol";
-import "../src/FHEAuction.sol";
+import {Script} from "forge-std/Script.sol";
+import {AuctionFactory} from "../src/AuctionFactory.sol";
+import {FHEAuction} from "../src/FHEAuction.sol";
 
 /**
  * @title Example Auction Interaction Script
@@ -36,16 +36,13 @@ contract ExampleScript is Script {
         uint256 tokenId = 1;
         uint256 reservePrice = 1 ether;
         
-        // Encrypt reserve price (mock for example)
-        bytes memory encryptedReserve = abi.encode(reservePrice);
-        
         // Create auction starting in 1 hour, 24h bidding, 24h reveal
         address auctionAddress = factory.createAuction(
             FHEAuction.AssetType.ERC721,
             nftContract,
             tokenId,
             0, // amount (not used for ERC721)
-            encryptedReserve,
+            reservePrice,
             block.timestamp + 1 hours,  // start time
             24 hours,                   // bidding duration
             24 hours                    // reveal duration
@@ -64,11 +61,8 @@ contract ExampleScript is Script {
         uint256 bidAmount = 1.5 ether;
         uint256 depositAmount = 2 ether; // Deposit must be >= bid
         
-        // Encrypt bid (mock for example)
-        bytes memory encryptedBid = abi.encode(bidAmount);
-        
         // Place bid
-        auction.placeBid{value: depositAmount}(encryptedBid);
+        auction.placeBid{value: depositAmount}(bidAmount);
         
         // Placed bid on auction: auctionAddress
         // Encrypted bid amount: bidAmount
