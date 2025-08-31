@@ -1,5 +1,8 @@
 # 🚀 FHE Auction dApp
 
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-unknown-lightgrey)
+
 A **sealed-bid auction dApp** built with **Next.js frontend** and **Solidity smart contracts**, featuring **Fully Homomorphic Encryption (FHE)** confidentiality using **Zama's Protocol**.
 
 ## 🎯 Project Overview
@@ -151,6 +154,31 @@ forge test --match-test testCreateAuction
 # Run with verbose output
 forge test -vvv
 ```
+
+## 📈 Coverage
+
+Temporary badge above shows coverage as "unknown". To generate coverage and update the badge:
+
+```bash
+cd contract
+forge coverage --report summary
+```
+
+This prints a summary with total coverage percentage. Replace the badge URL at the top with your actual number, e.g. for 87%:
+
+```markdown
+![Coverage](https://img.shields.io/badge/coverage-87%25-green)
+```
+
+Optional: generate lcov and HTML report
+
+```bash
+forge coverage --report lcov
+# If you have lcov/genhtml installed:
+genhtml -o coverage-html lcov.info
+```
+
+You can commit a screenshot from `coverage-html` if you prefer an image instead of a badge.
 
 ## 🚀 Deployment
 
