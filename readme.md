@@ -180,6 +180,10 @@ genhtml -o coverage-html lcov.info
 
 You can commit a screenshot from `coverage-html` if you prefer an image instead of a badge.
 
+### Coverage Screenshot
+
+![Coverage Screenshot](images/image.png)
+
 ## 🚀 Deployment
 
 ### Smart Contracts
