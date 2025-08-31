@@ -13,7 +13,7 @@ type ebool is bytes32;
 
 library FHE {
     // Basic operations
-    function asEuint32(bytes calldata data) internal pure returns (euint32) {
+    function asEuint32(bytes memory data) internal pure returns (euint32) {
         return euint32.wrap(keccak256(data));
     }
     

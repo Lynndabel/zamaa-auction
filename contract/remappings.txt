@@ -1,3 +1,4 @@
 @openzeppelin/=lib/openzeppelin-contracts/
 @fhevm/=lib/fhevm/
 @fhevm-contracts/=lib/fhevm/contracts/
+forge-std/=lib/forge-std/src/

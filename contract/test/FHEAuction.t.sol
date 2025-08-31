@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-
-import "../src/mocks/forge-std/Test.sol";
+import "forge-std/Test.sol";
 import "../src/FHEAuction.sol";
 import "../src/AuctionFactory.sol";
-import "../src/mocks/MockTFHE.sol";
+import "../src/FHE.sol";
 
 // Mock ERC721 for testing
 contract MockERC721 {

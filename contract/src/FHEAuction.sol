@@ -113,7 +113,7 @@ contract FHEAuction {
             assetContract: _assetContract,
             tokenId: _tokenId,
             amount: _amount,
-            reservePrice: TFHE.asEuint32(_encryptedReservePrice),
+            reservePrice: FHE.asEuint32(_encryptedReservePrice),
             startTime: _startTime,
             biddingEndTime: _startTime + _biddingDuration,
             revealEndTime: _startTime + _biddingDuration + _revealDuration,
@@ -153,12 +153,12 @@ contract FHEAuction {
         require(msg.value > 0, "Deposit required");
         require(bids[msg.sender].bidder == address(0), "Already bid");
         
-        euint32 encryptedBidAmount = TFHE.asEuint32(_encryptedBid);
+        euint32 encryptedBidAmount = FHE.asEuint32(_encryptedBid);
         
         bids[msg.sender] = Bid({
             bidder: msg.sender,
             encryptedAmount: encryptedBidAmount,
-            isRevealed: TFHE.asEbool(false),
+            isRevealed: FHE.asEbool(false),
             depositAmount: msg.value
         });
         
@@ -190,9 +190,9 @@ contract FHEAuction {
     {
         Bid storage bid = bids[msg.sender];
         require(bid.bidder == msg.sender, "No bid found");
-        require(!TFHE.decrypt(bid.isRevealed), "Already revealed");
+        require(!FHE.decrypt(bid.isRevealed), "Already revealed");
         
-        bid.isRevealed = TFHE.asEbool(true);
+        bid.isRevealed = FHE.asEbool(true);
         
         emit BidRevealed(msg.sender);
     }
@@ -218,12 +218,12 @@ contract FHEAuction {
             Bid memory bid = bids[bidder];
             
             // Only consider revealed bids
-            if (TFHE.decrypt(bid.isRevealed)) {
+            if (FHE.decrypt(bid.isRevealed)) {
                 // FHE comparison: check if this bid is higher
-                ebool isHigher = TFHE.gt(bid.encryptedAmount, highestBid);
+                ebool isHigher = FHE.gt(bid.encryptedAmount, highestBid);
                 
                 // Update winner if this bid is higher
-                if (TFHE.decrypt(isHigher)) {
+                if (FHE.decrypt(isHigher)) {
                     highestBid = bid.encryptedAmount;
                     currentWinner = bidder;
                 }
@@ -231,9 +231,9 @@ contract FHEAuction {
         }
         
         // Check if highest bid meets reserve price
-        ebool meetsReserve = TFHE.ge(highestBid, auction.reservePrice);
+        ebool meetsReserve = FHE.ge(highestBid, auction.reservePrice);
         
-        if (TFHE.decrypt(meetsReserve)) {
+        if (FHE.decrypt(meetsReserve)) {
             winner = currentWinner;
             winningBid = highestBid;
             auction.phase = Phase.Finalized;
