@@ -12,3 +12,63 @@ docs/
 
 # Dotenv file
 .env
+
+# Foundry specific
+cache_forge/
+out/
+cache/
+
+# Dependencies (keep lib/ for Foundry)
+# lib/
+
+# Coverage
+lcov.info
+coverage/
+coverage.json
+
+# Gas reports
+gas-report.txt
+
+# Hardhat
+cache/
+artifacts/
+typechain/
+typechain-types/
+
+# Node modules (if you have any)
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
