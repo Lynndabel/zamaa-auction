@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "lib/fhevm/library-solidity/lib/FHE.sol";
+import "./FHE.sol";
 /**
  * @title FHEAuction
  * @notice Sealed-bid auction using Fully Homomorphic Encryption (FHE)

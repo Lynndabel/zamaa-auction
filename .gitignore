@@ -72,3 +72,6 @@ pids
 .env.development.local
 .env.test.local
 .env.production.local
+
+# FHEVM keys
+gpu-csks/
