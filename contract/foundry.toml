@@ -13,9 +13,11 @@ ffi = true
 fs_permissions = [{ access = "read-write", path = "./" }]
 
 [rpc_endpoints]
-zama = "https://devnet.zama.ai"
+lisk_sepolia = "https://rpc.sepolia-api.lisk.com"
 
-[etherscan]
-zama = { key = "${ETHERSCAN_API_KEY}" }
+# Etherscan/Blockscout verification config is optional. Disabled for Lisk Sepolia by default.
+# To enable later, add the proper Blockscout API URL for chain 4202:
+# [etherscan]
+# 4202 = { key = "${ETHERSCAN_API_KEY}", url = "https://<lisk-sepolia-blockscout-domain>/api" }
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

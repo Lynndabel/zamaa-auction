@@ -37,6 +37,7 @@ typechain-types/
 
 # Node modules (if you have any)
 node_modules/
+.next/
 
 # IDE
 .vscode/

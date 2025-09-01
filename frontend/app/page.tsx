@@ -5,9 +5,10 @@ import { useState } from 'react'
 import { AuctionList } from './components/AuctionList'
 import { CreateAuction } from './components/CreateAuction'
 import { Header } from './components/Header'
+import { StartBidding } from './components/StartBidding'
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'browse' | 'create'>('browse')
+  const [activeTab, setActiveTab] = useState<'browse' | 'create' | 'manage'>('browse')
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -40,14 +41,22 @@ export default function Home() {
           >
             Create Auction
           </button>
+          <button
+            onClick={() => setActiveTab('manage')}
+            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
+              activeTab === 'manage'
+                ? 'bg-primary-600 text-white'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Manage
+          </button>
         </div>
 
         {/* Content */}
-        {activeTab === 'browse' ? (
-          <AuctionList />
-        ) : (
-          <CreateAuction />
-        )}
+        {activeTab === 'browse' && <AuctionList />}
+        {activeTab === 'create' && <CreateAuction />}
+        {activeTab === 'manage' && <StartBidding />}
       </main>
     </div>
   )

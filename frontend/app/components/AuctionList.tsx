@@ -1,75 +1,58 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo } from 'react'
+import { useContractRead } from 'wagmi'
+import { auctionFactoryAbi } from '../abi/auctionFactory'
+import Link from 'next/link'
 
-// Mock data - replace with actual contract calls
-const mockAuctions = [
-  {
-    id: 1,
-    title: 'Rare NFT #123',
-    description: 'A unique digital artwork',
-    currentBid: '2.5 ETH',
-    endTime: '2024-01-15T18:00:00Z',
-    status: 'active',
-    image: 'https://via.placeholder.com/300x200'
-  },
-  {
-    id: 2,
-    title: 'CryptoPunk #456',
-    description: 'One of the original CryptoPunks',
-    currentBid: '15.0 ETH',
-    endTime: '2024-01-20T18:00:00Z',
-    status: 'active',
-    image: 'https://via.placeholder.com/300x200'
-  }
-]
+const FACTORY_ADDRESS = process.env.NEXT_PUBLIC_FACTORY_ADDRESS as `0x${string}` | undefined
 
 export function AuctionList() {
-  const [auctions] = useState(mockAuctions)
+  const enabled = Boolean(FACTORY_ADDRESS)
+
+  const { data, isLoading, isError, refetch } = useContractRead({
+    abi: auctionFactoryAbi,
+    address: FACTORY_ADDRESS!,
+    functionName: 'getActiveAuctions',
+    enabled,
+  })
+
+  const auctions = useMemo(() => {
+    const addrs = (data as `0x${string}`[] | undefined) || []
+    return addrs.map((addr) => ({ address: addr }))
+  }, [data])
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Active Auctions</h2>
-      
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Active Auctions</h2>
+        <button className="btn-secondary" onClick={() => refetch()}>Refresh</button>
+      </div>
+
+      {!FACTORY_ADDRESS && (
+        <div className="text-yellow-700 bg-yellow-50 border border-yellow-200 p-3 rounded mb-6">
+          Set NEXT_PUBLIC_FACTORY_ADDRESS in frontend/.env.local to view auctions.
+        </div>
+      )}
+
+      {isLoading && <p className="text-gray-600">Loading auctions...</p>}
+      {isError && <p className="text-red-600">Failed to load auctions.</p>}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {auctions.map((auction) => (
-          <div key={auction.id} className="card hover:shadow-xl transition-shadow">
-            <img 
-              src={auction.image} 
-              alt={auction.title}
-              className="w-full h-48 object-cover rounded-lg mb-4"
-            />
-            
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {auction.title}
-            </h3>
-            
-            <p className="text-gray-600 mb-4">
-              {auction.description}
-            </p>
-            
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Current Bid:</span>
-                <span className="font-semibold text-primary-600">{auction.currentBid}</span>
-              </div>
-              
-              <div className="flex justify-between">
-                <span className="text-gray-500">Ends:</span>
-                <span className="text-sm text-gray-600">
-                  {new Date(auction.endTime).toLocaleDateString()}
-                </span>
-              </div>
+        {auctions.map((a) => (
+          <div key={a.address} className="card hover:shadow-xl transition-shadow">
+            <div className="mb-4">
+              <span className="text-xs uppercase text-gray-500">Auction</span>
+              <p className="font-mono break-all text-gray-900">{a.address}</p>
             </div>
-            
-            <button className="btn-primary w-full">
-              Place Bid
-            </button>
+            <Link className="btn-primary w-full text-center inline-block" href={`/auction/${a.address}`}>
+              View
+            </Link>
           </div>
         ))}
       </div>
-      
-      {auctions.length === 0 && (
+
+      {enabled && !isLoading && auctions.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">No active auctions found.</p>
         </div>
